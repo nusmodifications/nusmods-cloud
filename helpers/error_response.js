@@ -11,3 +11,11 @@ module.exports.notFound = function(res, err) {
     error: 'Requested resource not found: ' + err
   });
 }
+
+module.exports.notAuthorized = function(res, err) {
+  res.status(401);
+  res.json({
+    error: 'AuthError',
+    message: err
+  });
+}
