@@ -39,7 +39,7 @@ TimetableSchema.statics.findByIdWithUser = function(id, current, callback) {
       { _owner: current },
       { sharedUsers: { $all: current } }
       ])
-    // .populate('_owner', 'name profilePic')
+    .populate('_owner', 'name profilePic')
     .exec(callback);
 }
 
@@ -48,15 +48,15 @@ TimetableSchema.statics.findByIdWithOwner = function(id, current, callback) {
   var query = this.findById(new ObjectId(id))
     .select('_owner academicYear semester modules timestamp sharedUsers')
     .where('_owner', current)
-    //.populate('sharedUsers', 'name profilePic')
-    // .populate('_owner', 'name profilePic')
+    .populate('sharedUsers', '_id name profilePic')
+    .populate('_owner', 'name profilePic')
     .exec(callback);
 }
 
 TimetableSchema.statics.findShared = function(current, filter, callback) {
   var query = this.find({sharedUsers: current});
   query.select('_owner academicYear semester modules timestamp')
-    // .populate('_owner', 'name profilePic').;
+    .populate('_owner', 'name profilePic');
   if (filter.academicYear) {
     query.where('academicYear', filter.academicYear);
   }

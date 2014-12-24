@@ -2,7 +2,9 @@ var config = require('./config.js');
 
 var restify = require('restify')
   , fs = require('fs')
-  , mongoose = require('mongoose');
+  , mongoose = require('mongoose')
+  , _ = require('lodash')
+  , errorResponse = require('./helpers/error_response.js')
 
 
 // init db, controllers and models
@@ -33,16 +35,32 @@ server
   .use(restify.bodyParser({mapParams: false}));
 
 // routing
-server.get('/timetables', controllers.timetable.index);
-server.post('/timetables', controllers.timetable.create);
-server.get('/timetables/:id', controllers.timetable.getById);
-server.put('/timetables/:id', controllers.timetable.update);
+
+server.get('/auth', controllers.user.auth);
+
+function protectedRoute(handler) {
+  return function(req, res, next) {
+    controllers.user.getCurrentUser(req.params.user, req.params.token, function(err, user) {
+      if (err) {
+        errorResponse.notAuthorized(res, err)
+      } else {
+        req.currentUser = user;
+        handler(req, res, next);
+      }
+    });
+  }
+}
+
+server.get('/timetables', protectedRoute(controllers.timetable.index));
+server.post('/timetables', protectedRoute(controllers.timetable.create));
+server.get('/timetables/:id', protectedRoute(controllers.timetable.getById));
+server.put('/timetables/:id', protectedRoute(controllers.timetable.update));
 
 
-server.get('/timetables/:id/share', controllers.timetable.getShared);
-server.put('/timetables/:id/share', controllers.timetable.updateShared);
+server.get('/timetables/:id/share', protectedRoute(controllers.timetable.getShared));
+server.put('/timetables/:id/share', protectedRoute(controllers.timetable.updateShared));
 
-server.get('/incoming-timetables', controllers.timetable.incoming);
+server.get('/incoming-timetables', protectedRoute(controllers.timetable.incoming));
 
 
 // party time

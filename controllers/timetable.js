@@ -2,20 +2,17 @@ var exports = module.exports
 
 var mongoose = require('mongoose')
   , Timetable = mongoose.model("Timetable")
+  , User = mongoose.model("User")
   , errorResponse = require('../helpers/error_response.js')
   , _ = require('lodash');
 
-// TODO
-function currentUser() {
-  return 1;
-}
 
 exports.create = function(req, res, next) {
   var fields = {
     academicYear: req.body.academicYear,
     semester: req.body.semester,
     modules: req.body.modules,
-    _owner: currentUser(),
+    _owner: req.currentUser._id,
     main: false
   }
   var duplicate = new Timetable(fields);
@@ -44,7 +41,7 @@ exports.index = function(req, res, next) {
     semester: req.params.semester,
   };
 
-  Timetable.findWithOwner(currentUser(), filter, function(err, timetables) {
+  Timetable.findWithOwner(req.currentUser._id, filter, function(err, timetables) {
     if (err) {
       errorResponse.internal(res, err);
     } else {
@@ -54,11 +51,11 @@ exports.index = function(req, res, next) {
 }
 
 exports.getById = function(req, res, next) {
-  Timetable.findByIdWithUser(req.params.id, currentUser(), function(err, timetable) {
+  Timetable.findByIdWithUser(req.params.id, req.currentUser._id, function(err, timetable) {
     if (err) {
       errorResponse.internal(res, err);
     } else if (timetable) {
-      if (timetable._owner != currentUser()) {
+      if (timetable._owner != req.currentUser._id) {
         delete timetable.copy;
       }
       res.json(timetable);
@@ -69,12 +66,12 @@ exports.getById = function(req, res, next) {
 };
 
 exports.update = function(req, res, next) {
-  Timetable.findByIdWithOwner(req.params.id, currentUser(), function(err, timetable) {
+  Timetable.findByIdWithOwner(req.params.id, req.currentUser._id, function(err, timetable) {
     var duplicate = new Timetable({
       academicYear: timetable.academicYear,
       semester: timetable.semester,
       modules: req.body.modules,
-      _owner: currentUser(),
+      _owner: req.currentUser._id,
       main: false
     })
     duplicate.save(function(err, dupe) {
@@ -96,7 +93,7 @@ exports.update = function(req, res, next) {
 }
 
 exports.detele = function(req, res, next) {
-  Timetable.findByIdAndRemoveWithUser(req.params.id, currentUser(), function(err, timetable) {
+  Timetable.findByIdAndRemoveWithUser(req.params.id, req.currentUser._id, function(err, timetable) {
     if (err) {
       errorResponse.internal(res, err);
     } else if (timetable) {
@@ -108,7 +105,7 @@ exports.detele = function(req, res, next) {
 };
 
 exports.getShared = function(req, res, next) {
-  Timetable.findByIdWithOwner(req.params.id, currentUser(), function(err, timetable) {
+  Timetable.findByIdWithOwner(req.params.id, req.currentUser._id, function(err, timetable) {
     if (err) {
       errorResponse.internal(res, err);
     } else if (timetable) {
@@ -120,7 +117,7 @@ exports.getShared = function(req, res, next) {
 }
 
 exports.updateShared = function(req, res, next) {
-  Timetable.findByIdWithOwner(req.params.id, currentUser(), function(err, timetable) {
+  Timetable.findByIdWithOwner(req.params.id, req.currentUser._id, function(err, timetable) {
     if (err) {
       errorResponse.internal(res, err);
     } else if (!timetable) {
@@ -150,7 +147,7 @@ exports.incoming = function(req, res, next) {
     academicYear: req.params.academicYear,
     semester: req.params.semester,
   };
-  Timetable.findShared(currentUser(), filter, function(err, timetables) {
+  Timetable.findShared(req.currentUser._id, filter, function(err, timetables) {
     if (err) {
       errorResponse.internal(res, err);
     } else {
