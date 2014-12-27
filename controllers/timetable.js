@@ -130,13 +130,33 @@ exports.updateShared = function(req, res, next) {
           timetable.sharedUsers.pull(user.slice(1));
         }
       });
-      timetable.save(function(err, timetable) {
-        if (err) {
-          errorResponse.internal(res, err);
-        } else {
-          res.json(timetable.sharedUsers)
+
+      var users = _.clone(req.body);
+      var total = users.length;
+      // save all users to db
+      function upsertAll(users) {
+        var user = users.pop();
+        if (user && user[0] == '-') {
+          user = user.slice(1);
         }
-      });
+
+        User.upsertUserBare(user, function(err, saved){
+          if (err) throw err;//handle error
+
+          if (--total) {
+            upsertAll(users);
+          } else {
+            timetable.save(function(err, timetable) {
+            if (err) {
+              errorResponse.internal(res, err);
+            } else {
+              res.json(timetable.sharedUsers)
+            }
+          });
+          }
+        });
+      }
+      upsertAll(users);
     }
   });
 }
