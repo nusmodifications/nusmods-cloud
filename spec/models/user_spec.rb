@@ -13,5 +13,7 @@ RSpec.describe User, type: :model do
 
     it { is_expected.to allow_value('xinan@nus.edu.sg', 'xinan@u.nus.edu').for(:email) }
     it { is_expected.not_to allow_value('not_a_email', '0123456789').for(:email) }
+
+    it { is_expected.to have_many(:timetables) }
   end
 end

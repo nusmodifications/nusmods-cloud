@@ -11,7 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150802074335) do
+ActiveRecord::Schema.define(version: 20150802082121) do
+
+  create_table "timetables", force: :cascade do |t|
+    t.integer  "user_id",    limit: 4
+    t.string   "semester",   limit: 255
+    t.text     "lessons",    limit: 65535
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "timetables", ["user_id"], name: "index_timetables_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "nusnet_id",           limit: 255, null: false
@@ -30,4 +40,5 @@ ActiveRecord::Schema.define(version: 20150802074335) do
 
   add_index "users", ["nusnet_id"], name: "index_users_on_nusnet_id", unique: true, using: :btree
 
+  add_foreign_key "timetables", "users"
 end
