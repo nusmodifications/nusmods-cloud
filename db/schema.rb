@@ -11,6 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20150802074335) do
+
+  create_table "users", force: :cascade do |t|
+    t.string   "nusnet_id",           limit: 255, null: false
+    t.string   "name",                limit: 255
+    t.string   "email",               limit: 255
+    t.string   "gender",              limit: 255
+    t.string   "faculty",             limit: 255
+    t.string   "first_major",         limit: 255
+    t.string   "second_major",        limit: 255
+    t.integer  "matriculation_year",  limit: 4
+    t.string   "ivle_token",          limit: 255
+    t.string   "access_token_digest", limit: 255
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
+  add_index "users", ["nusnet_id"], name: "index_users_on_nusnet_id", unique: true, using: :btree
 
 end
