@@ -5,11 +5,21 @@ gem 'rails', '4.2.3'
 
 gem 'rails-api'
 
-gem 'spring', :group => :development
-
-
 gem 'mysql2'
 
+group :development, :test do
+  gem 'rspec-rails', '~> 3.0'
+end
+
+group :development do
+  gem 'spring'
+  gem 'annotate', '~> 2.6.6'
+end
+
+group :test do
+  gem 'shoulda-matchers'
+  gem 'test_after_commit'
+end
 
 
 # To use ActiveModel has_secure_password
