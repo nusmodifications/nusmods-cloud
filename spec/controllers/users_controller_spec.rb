@@ -75,12 +75,12 @@ RSpec.describe UsersController, type: :controller do
         expected = {
           status: 401,
           details: 'YOU SHALL NOT PASS!'
-        }
+        }.to_json
 
         get :show, nusnetId: 'a0123456'
 
         expect(response).to have_http_status(:unauthorized)
-        expect(response.body).to eq(expected.to_json)
+        expect(response.body).to eq(expected)
       end
     end
 
