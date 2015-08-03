@@ -13,6 +13,16 @@ class TimetablesController < ApplicationController
     end
   end
 
+  def show
+    params.require(:semester)
+    timetable = @user.timetables.find_by_semester(params[:semester])
+    if timetable.present?
+      render json: timetable, serializer: TimetableSerializer
+    else
+      generate_error_payload(404, 'Timetable of the requested semester does not exist.')
+    end
+  end
+
   private
     def timetable_params
       params.require(:semester)
