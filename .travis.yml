@@ -13,3 +13,6 @@ before_script:
 script:
   - bundle exec rspec spec
 
+notifications:
+  email: false
+  hipchat: 823d4c11858ce2bb9471e5b05d1925@678334
