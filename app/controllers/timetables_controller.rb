@@ -1,7 +1,7 @@
 class TimetablesController < ApplicationController
   before_filter :authenticate_user_from_token!
 
-  def create
+  def save
     timetable = @user.timetables.find_by_semester(timetable_params[:semester]) || Timetable.new
     timetable.assign_attributes(timetable_params)
     timetable.user = @user

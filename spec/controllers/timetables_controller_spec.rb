@@ -18,7 +18,7 @@ RSpec.describe TimetablesController, type: :controller do
     }.to_json
   end
 
-  describe 'POST #create' do
+  describe 'POST #save' do
     context 'when user is not authenticated' do
       it 'returns 401 unauthorized' do
         expected = {
@@ -26,7 +26,7 @@ RSpec.describe TimetablesController, type: :controller do
           details: 'YOU SHALL NOT PASS!'
         }
 
-        post :create
+        post :save
         expect(response).to have_http_status(:unauthorized)
         expect(response.body).to eq(expected.to_json)
       end
@@ -42,13 +42,13 @@ RSpec.describe TimetablesController, type: :controller do
 
       context 'when one or more of the required params are missing' do
         it 'returns 400 bad request' do
-          post :create
+          post :save
           expect(response).to have_http_status(:bad_request)
 
-          post :create, semester: '2015-2016/sem1'
+          post :save, semester: '2015-2016/sem1'
           expect(response).to have_http_status(:bad_request)
 
-          post :create, lessons: 'CS3230[LEC]=2&CS3244[LEC]=1&CS3244[TUT]=2'
+          post :save, lessons: 'CS3230[LEC]=2&CS3244[LEC]=1&CS3244[TUT]=2'
           expect(response).to have_http_status(:bad_request)
         end
       end
@@ -57,7 +57,7 @@ RSpec.describe TimetablesController, type: :controller do
         it 'updates the timetable for that semester' do
           expect_any_instance_of(User).to receive_message_chain(:timetables, :find_by_semester).and_return(timetable)
 
-          post :create, semester: '2015-2016/sem1', lessons: 'CS3230[LEC]=2&CS3244[LEC]=1&CS3244[TUT]=2'
+          post :save, semester: '2015-2016/sem1', lessons: 'CS3230[LEC]=2&CS3244[LEC]=1&CS3244[TUT]=2'
 
           expect(response).to have_http_status(:success)
           expect(response.body).to eq(sample_output)
@@ -68,7 +68,7 @@ RSpec.describe TimetablesController, type: :controller do
         it 'create a new timetable record under the user for that semester' do
           expect_any_instance_of(User).to receive_message_chain(:timetables, :find_by_semester).and_return(nil)
 
-          post :create, semester: '2015-2016/sem1', lessons: 'CS3230[LEC]=2&CS3244[LEC]=1&CS3244[TUT]=2'
+          post :save, semester: '2015-2016/sem1', lessons: 'CS3230[LEC]=2&CS3244[LEC]=1&CS3244[TUT]=2'
 
           expect(response).to have_http_status(:success)
           expect(response.body).to eq(sample_output)

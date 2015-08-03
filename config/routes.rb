@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   get 'users/profile'
 
   get 'timetables', to: 'timetables#show'
-  post 'timetables', to: 'timetables#create'
+  post 'timetables', to: 'timetables#save'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
