@@ -1,18 +1,19 @@
 language: ruby
-
 rvm: 2.2.2
-
 env:
-  - DB=mysql
-
+- DB=mysql
 sudo: false
-
 before_script:
-  - bundle exec rake db:setup
-
+- bundle exec rake db:setup
 script:
-  - bundle exec rspec spec
-
+- bundle exec rspec spec
 notifications:
   email: false
-  hipchat: 823d4c11858ce2bb9471e5b05d1925@678334
+  hipchat:
+    matrix:
+    - 823d4c11858ce2bb9471e5b05d1925@678334
+    rooms:
+      secure: Jiu3zUn+qrvYuN4OoaM0PzTA71zcAeiCfend188Tl/duvzBrR1sJhY2+9n6F4xcJ8dPz8J6+qZ/Z1ox8owd305s5m7Xfo8H3rFAZxZ/bijvviAhhjGQiC39XrFgwsjjrVPK6fT03qbxu8hzYruBjsIxOw6TXIqUQHfTDVJoc/Kk=
+    template:
+      - 'The build #<a href="%{build_url}">%{build_number}</a> for %{branch}(<a href="%{compare_url}">%{commit}</a>)@%{repository_name} by %{author} has %{result} %{message} in %{duration}.'
+    format: html
