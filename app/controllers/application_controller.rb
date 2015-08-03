@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::API
+  include ActionController::Serialization
+
   private
     def authenticate_user_from_token!
       nusnet_id = request.headers['nusnet_id']
@@ -9,14 +11,14 @@ class ApplicationController < ActionController::API
       end
     end
 
-    def generator_error_payload(status, details)
+    def generate_error_payload(status, details)
       error = {
         status: status,
         details: details
       }
 
       Rails.logger.info do
-        "[#{self.class}][#{__method__}] Failed. Parameters: #{params}. Error: #{error}"
+        "[#{self.class}][#{self.action_name}] Failed. Parameters: #{params}. Error: #{error}"
       end
 
       render json: error, status: status
