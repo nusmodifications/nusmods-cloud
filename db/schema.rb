@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150803080844) do
+ActiveRecord::Schema.define(version: 20150803085039) do
 
   create_table "friendships", force: :cascade do |t|
     t.integer  "user_id",    limit: 4
@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 20150803080844) do
     t.string   "faculty",            limit: 255
     t.string   "first_major",        limit: 255
     t.string   "second_major",       limit: 255
-    t.integer  "matriculation_year", limit: 4
+    t.string   "matriculation_year", limit: 255
     t.text     "ivle_token",         limit: 65535
     t.string   "access_token",       limit: 255
     t.datetime "created_at",                       null: false
