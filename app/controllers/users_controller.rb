@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_user_from_token!, only: [:show, :update]
+  before_filter :authenticate_user_from_token!, only: [:profile]
 
   def auth
     profile = IVLE.new(auth_params[:ivleToken]).get_profile
@@ -13,6 +13,10 @@ class UsersController < ApplicationController
     user.save
 
     render json: user, serializer: UserProfileSerializer
+  end
+
+  def profile
+    render json: @user, serializer: UserProfileSerializer
   end
 
   private
