@@ -18,6 +18,52 @@ RSpec.describe TimetablesController, type: :controller do
     }.to_json
   end
 
+  describe 'GET #index' do
+    context 'when user is not authenticated' do
+      it 'returns 401 unauthorized' do
+        expected = {
+          status: 401,
+          details: 'YOU SHALL NOT PASS!'
+        }
+
+        get :index, nusnetId: 'a0123456'
+        expect(response).to have_http_status(:unauthorized)
+        expect(response.body).to eq(expected.to_json)
+      end
+    end
+
+    context 'when user is authenticated' do
+      it 'returns 200 success along with list of timetables' do
+        timetables = [
+          Timetable.new(semester: '2015-2016/sem1', lessons: 'CS3230[LEC]=2'),
+          Timetable.new(semester: '2015-2016/sem2', lessons: '')
+        ]
+
+        expected = {
+          timetables: [
+            {
+              semester: '2015-2016/sem1',
+              lessons: 'CS3230[LEC]=2'
+            },
+            {
+              semester: '2015-2016/sem2',
+              lessons: ''
+            }
+          ]
+        }.to_json
+
+        request.headers['Authorization'] = 'this_is_a_token_if_you_believe'
+        expect(User).to receive_message_chain(:where, :first)
+            .and_return(user)
+        expect_any_instance_of(User).to receive(:timetables).and_return(timetables)
+
+        get :index, nusnetId: 'a0123456'
+        expect(response).to have_http_status(:success)
+        expect(response.body).to eq(expected)
+      end
+    end
+  end
+
   describe 'POST #create' do
     context 'when user is not authenticated' do
       it 'returns 401 unauthorized' do

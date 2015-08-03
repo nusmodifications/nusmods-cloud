@@ -2,8 +2,9 @@ Rails.application.routes.draw do
   get 'users/:nusnetId', to: 'users#show'
   post 'users', to: 'users#create'
 
-  get 'users/:nusnetId/timetables/*semester', to: 'timetables#show'
+  get 'users/:nusnetId/timetables', to: 'timetables#index'
   post 'users/:nusnetId/timetables', to: 'timetables#create'
+  get 'users/:nusnetId/timetables/*semester', to: 'timetables#show'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

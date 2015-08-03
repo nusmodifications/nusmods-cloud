@@ -1,6 +1,11 @@
 class TimetablesController < ApplicationController
   before_filter :authenticate_user_from_token!
 
+  def index
+    timetables = @user.timetables
+    render json: timetables, each_serializer: TimetableSerializer
+  end
+
   def create
     timetable = @user.timetables.find_by_semester(timetable_params[:semester]) || Timetable.new
     timetable.semester = timetable_params[:semester]
