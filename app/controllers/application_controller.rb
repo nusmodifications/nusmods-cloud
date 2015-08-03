@@ -7,8 +7,8 @@ class ApplicationController < ActionController::API
 
   private
     def authenticate_user_from_token!
-      nusnet_id = request.headers['nusnetId']
-      access_token = request.headers['accessToken']
+      nusnet_id = params[:nusnetId]
+      access_token = request.headers['Authorization']
       @user = User.where(nusnet_id: nusnet_id, access_token: access_token).first
       if @user.blank?
         return generate_error_payload(401, 'YOU SHALL NOT PASS!')

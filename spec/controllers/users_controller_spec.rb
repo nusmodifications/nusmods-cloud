@@ -31,16 +31,16 @@ RSpec.describe UsersController, type: :controller do
     }.to_json
   end
 
-  describe 'GET #auth' do
+  describe 'POST #auth' do
     context 'when one or more of the required params are missing' do
       it 'returns 400 bad request' do
-        get :auth
+        post :create
         expect(response).to have_http_status(:bad_request)
 
-        get :auth, nusnetId: 'A0123456'
+        post :create, nusnetId: 'A0123456'
         expect(response).to have_http_status(:bad_request)
 
-        get :auth, ivleToken: 'this_is_a_token_if_you_believe'
+        post :create, ivleToken: 'this_is_a_token_if_you_believe'
         expect(response).to have_http_status(:bad_request)
       end
     end
@@ -50,7 +50,7 @@ RSpec.describe UsersController, type: :controller do
         it 'returns 401 unauthorized' do
           expect(IVLE).to receive_message_chain(:new, :get_profile).and_return(sample_profile)
 
-          get :auth, nusnetId: 'a6543210', ivleToken: 'this_is_a_token_if_you_believe'
+          post :create, nusnetId: 'a6543210', ivleToken: 'this_is_a_token_if_you_believe'
 
           expect(response).to have_http_status(:unauthorized)
         end
@@ -60,7 +60,7 @@ RSpec.describe UsersController, type: :controller do
         it 'returns 200 success along with user profile' do
           expect(IVLE).to receive_message_chain(:new, :get_profile).and_return(sample_profile)
 
-          get :auth, nusnetId: 'a0123456', ivleToken: 'this_is_a_token_if_you_believe'
+          post :create, nusnetId: 'a0123456', ivleToken: 'this_is_a_token_if_you_believe'
 
           expect(response).to have_http_status(:success)
           expect(response.body).to eq(sample_output)
@@ -69,7 +69,7 @@ RSpec.describe UsersController, type: :controller do
     end
   end
 
-  describe 'GET #profile' do
+  describe 'GET #show' do
     context 'when user is not authenticated' do
       it 'returns 401 unauthorized' do
         expected = {
@@ -77,7 +77,7 @@ RSpec.describe UsersController, type: :controller do
           details: 'YOU SHALL NOT PASS!'
         }
 
-        get :profile
+        get :show, nusnetId: 'a0123456'
 
         expect(response).to have_http_status(:unauthorized)
         expect(response.body).to eq(expected.to_json)
@@ -89,10 +89,9 @@ RSpec.describe UsersController, type: :controller do
         expect(User).to receive_message_chain(:where, :first)
             .and_return(User.new(sample_profile.merge(access_token: '6ppsSGwXujEDTc4V8IoOHRmR9/bWa4yfrs21ZccwT2Q=')))
 
-        request.headers['nusnetId'] = 'a0123456'
-        request.headers['accessToken'] = 'this_is_a_token_if_you_believe'
+        request.headers['Authorization'] = 'this_is_a_token_if_you_believe'
 
-        get :profile
+        get :show, nusnetId: 'a0123456'
 
         expect(response).to have_http_status(:success)
         expect(response.body).to eq(sample_output)

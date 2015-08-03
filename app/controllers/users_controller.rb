@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_user_from_token!, except: :auth
+  before_filter :authenticate_user_from_token!, except: :create
 
-  def auth
+  def create
     profile = IVLE.new(auth_params[:ivleToken]).get_profile
     unless profile.present? && profile[:nusnet_id].casecmp(auth_params[:nusnetId]) == 0
       return generate_error_payload(401, 'Your token is not my token.')
@@ -18,7 +18,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def profile
+  def show
     render json: @user, serializer: UserProfileSerializer
   end
 

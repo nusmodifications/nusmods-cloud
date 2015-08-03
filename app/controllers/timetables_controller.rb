@@ -1,7 +1,7 @@
 class TimetablesController < ApplicationController
   before_filter :authenticate_user_from_token!
 
-  def save
+  def create
     timetable = @user.timetables.find_by_semester(timetable_params[:semester]) || Timetable.new
     timetable.assign_attributes(timetable_params)
     timetable.user = @user
@@ -14,7 +14,6 @@ class TimetablesController < ApplicationController
   end
 
   def show
-    params.require(:semester)
     timetable = @user.timetables.find_by_semester(params[:semester])
     if timetable.present?
       render json: timetable, serializer: TimetableSerializer
@@ -26,7 +25,6 @@ class TimetablesController < ApplicationController
   private
     def timetable_params
       params.require(:semester)
-      params.require(:lessons)
       params.permit(:semester, :lessons)
     end
 end

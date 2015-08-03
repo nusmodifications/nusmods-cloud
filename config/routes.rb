@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
-  get 'users/auth'
-  get 'users/profile'
+  get 'users/:nusnetId', to: 'users#show'
+  post 'users', to: 'users#create'
 
-  get 'timetables', to: 'timetables#show'
-  post 'timetables', to: 'timetables#save'
+  get 'users/:nusnetId/timetables/*semester', to: 'timetables#show'
+  post 'users/:nusnetId/timetables', to: 'timetables#create'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
