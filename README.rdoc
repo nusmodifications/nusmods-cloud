@@ -1,28 +1,50 @@
-== README
+= NUSModsCloud {<img src="https://travis-ci.org/nusmodifications/nusmods-cloud.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/nusmodifications/nusmods-cloud]
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Backend for social features of NUSMods.
 
-Things you may want to cover:
+== What can NUSModsCloud do?
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* Login via IVLE
+* Retrieve module list from IVLE
+* Sync timetables across different devices
+* Send requests to add friends and share timetables
 
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+
+== Contribute
+=== Dependencies:
+* ruby
+* rails-api
+* mysql
+
+
+=== How to run it:
+1. Fork this repo.
+2. Install all the dependencies.
+    brew install mysql
+    bundle install
+3. Set up database
+    bundle exec rake db:setup
+4. Get a IVLE API key from https://ivle.nus.edu.sg/LAPI/default.aspx
+5. Run
+    IVLE_API_KEY=your_api_key_here bundle exec rails-api server
+6. You may test the APIs using Postman
+
+
+=== How to contribute:
+1. Branch out from latest master
+    git checkout -b new_feature
+2. Implement the new feature / bug fix
+3. Add the spec of your feature in specs/, make sure all of them passes
+4. Create a PR.
+
+You can also do it in a TDD (Test Driven Development) way.
+1. Branch out from latest master
+2. Create the specs of your feature.
+3. Implement your feature so that all the specs passes.
+4. Create a PR.
+
+
+
+== License
+NUSModsCloud is released under {MIT License}[http://www.opensource.org/licenses/MIT]
