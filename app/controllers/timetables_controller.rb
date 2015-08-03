@@ -1,9 +1,6 @@
 class TimetablesController < ApplicationController
-  before_filter :authenticate_user_from_token!
-
   def index
-    timetables = @user.timetables
-    render json: timetables, each_serializer: TimetableSerializer
+    render json: @user.timetables, each_serializer: TimetableSerializer
   end
 
   def create

@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::API
   include ActionController::Serialization
 
+  before_filter :authenticate_user_from_token!
+
   rescue_from(ActionController::ParameterMissing) do |e|
     generate_error_payload(400, "Parameter `#{e.param}` is missing.")
   end

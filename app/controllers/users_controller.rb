@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_user_from_token!, except: :create
+  skip_before_filter :authenticate_user_from_token!, only: :create
 
   def create
     profile = IVLE.new(auth_params[:ivleToken]).get_profile
