@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   get 'users/auth'
   get 'users/profile'
 
+  post 'timetables', to: 'timetables#create'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
