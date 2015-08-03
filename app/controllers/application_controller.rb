@@ -1,6 +1,10 @@
 class ApplicationController < ActionController::API
   include ActionController::Serialization
 
+  rescue_from(ActionController::ParameterMissing) do |e|
+    generate_error_payload(400, "Parameter #{e.param} is missing.")
+  end
+
   private
     def authenticate_user_from_token!
       nusnet_id = request.headers['nusnet_id']

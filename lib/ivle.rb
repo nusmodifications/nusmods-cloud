@@ -29,7 +29,7 @@ class IVLE
   #   faculty: 'School of Computing',
   #   first_major: 'Computer Science (Hons)',
   #   second_major: '',
-  #   matriculation_year: 2014
+  #   matriculation_year: '2014'
   #   ivle_token: 'blah_blah_blah'
   # }
   def get_profile
