@@ -15,5 +15,5 @@ notifications:
     rooms:
       secure: Jiu3zUn+qrvYuN4OoaM0PzTA71zcAeiCfend188Tl/duvzBrR1sJhY2+9n6F4xcJ8dPz8J6+qZ/Z1ox8owd305s5m7Xfo8H3rFAZxZ/bijvviAhhjGQiC39XrFgwsjjrVPK6fT03qbxu8hzYruBjsIxOw6TXIqUQHfTDVJoc/Kk=
     template:
-      - '<a href="%{build_url}">Build#%{build_number}</a>(<a href="%{compare_url}">%{commit}</a>) for %{branch}@%{repository_name} by %{author} has %{result} in %{duration}.'
+      - 'Build <a href="%{build_url}">#%{build_number}</a>(<a href="%{compare_url}">%{commit}</a>) for %{branch}@%{repository_name} by %{author} has %{result} in %{duration}.'
     format: html
