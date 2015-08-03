@@ -8,6 +8,7 @@ gem 'rails-api'
 gem 'mysql2'
 
 gem 'httparty'
+gem 'active_model_serializers'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.0'
