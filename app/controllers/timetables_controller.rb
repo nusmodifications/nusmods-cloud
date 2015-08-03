@@ -3,7 +3,8 @@ class TimetablesController < ApplicationController
 
   def create
     timetable = @user.timetables.find_by_semester(timetable_params[:semester]) || Timetable.new
-    timetable.assign_attributes(timetable_params)
+    timetable.semester = timetable_params[:semester]
+    timetable.lessons = timetable_params[:lessons] || ''
     timetable.user = @user
     if timetable.save
       render json: timetable, serializer: TimetableSerializer
