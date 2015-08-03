@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_user_from_token!, only: [:profile]
+  before_filter :authenticate_user_from_token!, except: :auth
 
   def auth
     profile = IVLE.new(auth_params[:ivleToken]).get_profile
@@ -10,9 +10,12 @@ class UsersController < ApplicationController
     user = User.find_by_nusnet_id(profile[:nusnet_id]) || User.new
     user.assign_attributes(profile)
     user.access_token = Digest::SHA2.base64digest(profile[:ivle_token])
-    user.save
 
-    render json: user, serializer: UserProfileSerializer
+    if user.save
+      render json: user, serializer: UserProfileSerializer
+    else
+      generate_error_payload(400, 'Failed to login. Please contact support.')
+    end
   end
 
   def profile

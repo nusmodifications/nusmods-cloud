@@ -28,10 +28,10 @@ RSpec.describe UsersController, type: :controller do
         matriculationYear: '2014',
         accessToken: '6ppsSGwXujEDTc4V8IoOHRmR9/bWa4yfrs21ZccwT2Q='
       }
-    }
+    }.to_json
   end
 
-  describe "GET #auth" do
+  describe 'GET #auth' do
     context 'when one or more of the required params are missing' do
       it 'returns 400 bad request' do
         get :auth
@@ -63,13 +63,13 @@ RSpec.describe UsersController, type: :controller do
           get :auth, nusnetId: 'a0123456', ivleToken: 'this_is_a_token_if_you_believe'
 
           expect(response).to have_http_status(:success)
-          expect(response.body).to eq(sample_output.to_json)
+          expect(response.body).to eq(sample_output)
         end
       end
     end
   end
 
-  describe "GET #profile" do
+  describe 'GET #profile' do
     context 'when user is not authenticated' do
       it 'returns 401 unauthorized' do
         expected = {
@@ -95,7 +95,7 @@ RSpec.describe UsersController, type: :controller do
         get :profile
 
         expect(response).to have_http_status(:success)
-        expect(response.body).to eq(sample_output.to_json)
+        expect(response.body).to eq(sample_output)
       end
     end
   end
