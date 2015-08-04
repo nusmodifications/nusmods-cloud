@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get 'users/:nusnetId/timetables/*semester', to: 'timetables#show'
 
   get 'users/:nusnetId/friends', to: 'friendships#index'
+  post 'users/:nusnetId/friends', to: 'friendships#create'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
