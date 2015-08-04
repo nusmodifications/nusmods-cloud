@@ -74,8 +74,11 @@ RSpec.describe UsersController, type: :controller do
     context 'when user is not authenticated' do
       it 'returns 401 unauthorized' do
         expected = {
-          status: 401,
-          details: 'YOU SHALL NOT PASS!'
+          status: 'Unauthorized',
+          code: 401,
+          response: {
+            message: 'YOU SHALL NOT PASS!'
+          }
         }.to_json
 
         get :show, nusnetId: 'a0123456'

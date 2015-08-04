@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   def create
     profile = IVLE.new(auth_params[:ivleToken]).get_profile
     unless profile.present? && profile[:nusnet_id].casecmp(auth_params[:nusnetId]) == 0
-      return generate_error_payload(401, 'Your token is not my token.')
+      return generate_error_payload('Unauthorized', 401, 'Your token is not my token.')
     end
 
     user = User.find_by_nusnet_id(profile[:nusnet_id]) || User.new
@@ -14,7 +14,7 @@ class UsersController < ApplicationController
     if user.save
       generate_api_payload('userProfile', UserProfileSerializer.new(user))
     else
-      generate_error_payload(400, 'Failed to login. Please contact support.')
+      generate_error_payload('Bad request', 400, 'Failed to login. Please contact support.')
     end
   end
 

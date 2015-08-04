@@ -13,7 +13,7 @@ class TimetablesController < ApplicationController
       generate_api_payload('timetable', TimetableSerializer.new(timetable))
     else
       puts timetable.errors.messages
-      generate_error_payload(400, 'Failed to save timetable. Please contact support.')
+      generate_error_payload('Bad request', 400, 'Failed to save timetable. Please contact support.')
     end
   end
 
@@ -22,7 +22,7 @@ class TimetablesController < ApplicationController
     if timetable.present?
       generate_api_payload('timetable', TimetableSerializer.new(timetable))
     else
-      generate_error_payload(404, 'Timetable of the requested semester does not exist.')
+      generate_error_payload('Not found', 404, 'Timetable of the requested semester does not exist.')
     end
   end
 

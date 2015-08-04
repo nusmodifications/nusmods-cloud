@@ -4,7 +4,7 @@ class ApplicationController < ActionController::API
   before_filter :authenticate_user_from_token!
 
   rescue_from(ActionController::ParameterMissing) do |e|
-    generate_error_payload(400, "Parameter `#{e.param}` is missing.")
+    generate_error_payload('Missing parameters', 400, "Parameter `#{e.param}` is missing.")
   end
 
   private
@@ -13,7 +13,7 @@ class ApplicationController < ActionController::API
       access_token = request.headers['Authorization']
       @user = User.where(nusnet_id: nusnet_id, access_token: access_token).first
       if @user.blank?
-        return generate_error_payload(401, 'YOU SHALL NOT PASS!')
+        return generate_error_payload('Unauthorized', 401, 'YOU SHALL NOT PASS!')
       end
     end
 
@@ -23,16 +23,19 @@ class ApplicationController < ActionController::API
       render json: payload, status: :ok
     end
 
-    def generate_error_payload(status, details)
+    def generate_error_payload(status, code, message)
       error = {
         status: status,
-        details: details
+        code: code,
+        response: {
+          message: message
+        }
       }
 
       Rails.logger.info do
         "[#{self.class}][#{self.action_name}] Failed. Parameters: #{params}. Error: #{error}"
       end
 
-      render json: error, status: status
+      render json: error, status: code
     end
 end

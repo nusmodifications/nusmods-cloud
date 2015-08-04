@@ -23,8 +23,11 @@ RSpec.describe TimetablesController, type: :controller do
     context 'when user is not authenticated' do
       it 'returns 401 unauthorized' do
         expected = {
-          status: 401,
-          details: 'YOU SHALL NOT PASS!'
+          status: 'Unauthorized',
+          code: 401,
+          response: {
+            message: 'YOU SHALL NOT PASS!'
+          }
         }.to_json
 
         get :index, nusnetId: 'a0123456'
@@ -70,8 +73,11 @@ RSpec.describe TimetablesController, type: :controller do
     context 'when user is not authenticated' do
       it 'returns 401 unauthorized' do
         expected = {
-          status: 401,
-          details: 'YOU SHALL NOT PASS!'
+          status: 'Unauthorized',
+          code: 401,
+          response: {
+            message: 'YOU SHALL NOT PASS!'
+          }
         }.to_json
 
         post :create, nusnetId: 'a0123456'
@@ -125,8 +131,11 @@ RSpec.describe TimetablesController, type: :controller do
     context 'when user is not authenticated' do
       it 'returns 401 unauthorized' do
         expected = {
-          status: 401,
-          details: 'YOU SHALL NOT PASS!'
+          status: 'Unauthorized',
+          code: 401,
+          response: {
+            message: 'YOU SHALL NOT PASS!'
+          }
         }.to_json
 
         get :show, nusnetId: 'a0123456', semester: '2015-2016/sem1'
@@ -156,8 +165,11 @@ RSpec.describe TimetablesController, type: :controller do
           expect_any_instance_of(User).to receive_message_chain(:timetables, :find_by_semester).and_return(nil)
 
           expected = {
-            status: 404,
-            details: 'Timetable of the requested semester does not exist.'
+            status: 'Not found',
+            code: 404,
+            response: {
+              message: 'Timetable of the requested semester does not exist.'
+            }
           }.to_json
 
           get :show, nusnetId: 'a0123456', semester: '2015-2016/sem1'
