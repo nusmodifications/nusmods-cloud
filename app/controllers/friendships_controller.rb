@@ -19,14 +19,39 @@ class FriendshipsController < ApplicationController
         return generate_error_payload('Bad request', 400, 'Friend request already sent.')
       else
         friendship.update_attribute(:approved, true)
-        generate_api_payload('friendProfile', FriendProfileSerializer.new(friend))
+        return generate_api_payload('friendProfile', FriendProfileSerializer.new(friend))
+      end
+    end
+
+    if Friendship.create(user_id: @user.id, friend_id: friend.id)
+      generate_api_payload('outgoingRequest', OutgoingRequestSerializer.new(friend))
+    else
+      generate_error_payload('Bad request', 400, 'Failed to add friend.')
+    end
+  end
+
+  def delete
+    friend = User.find_by_nusnet_id(friendship_params[:friendNusnetId])
+    return generate_error_payload('Not found', 404, 'Friend not found.') if friend.blank?
+
+    active_friendship = Friendship.where(user_id: @user.id, friend_id: friend.id)
+    passive_friendship = Friendship.where(user_id: friend.id, friend_id: @user.id)
+
+    if active_friendship.blank? && passive_friendship.blank?
+      return generate_error_payload('Not found', 404, 'Friendship not found')
+    end
+
+    friendship = active_friendship.first || passive_friendship.first
+    if friendship.destroy
+      if friendship.approved
+        return generate_api_payload('deleted')
+      elsif friendship.user_id == @user.id
+        return generate_api_payload('canceled')
+      else
+        return generate_api_payload('rejected')
       end
     else
-      if Friendship.create(user_id: @user.id, friend_id: friend.id)
-        generate_api_payload('outgoingRequest', OutgoingRequestSerializer.new(friend))
-      else
-        generate_error_payload('Bad request', 400, 'Failed to add friend.')
-      end
+      generate_error_payload('')
     end
   end
 

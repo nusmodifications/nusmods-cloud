@@ -17,8 +17,9 @@ class ApplicationController < ActionController::API
       end
     end
 
-    def generate_api_payload(type, data)
-      payload = { type: type, data: data }
+    def generate_api_payload(type, data = {})
+      payload = { type: type }
+      payload.merge!({ data: data }) if data.present?
 
       render json: payload, status: :ok
     end
