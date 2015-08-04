@@ -260,13 +260,13 @@ RSpec.describe FriendshipsController, type: :controller do
         end
       end
 
-      context 'and canceling a friend request' do
-        it 'returns 200 success with type "canceled"' do
+      context 'and cancelling a friend request' do
+        it 'returns 200 success with type "cancelled"' do
           expect(User).to receive(:find_by_nusnet_id).and_return(user2)
           allow(Friendship).to receive_message_chain(:where, :first)
               .and_return(Friendship.new(user_id: user1.id, friend_id: user2.id, approved: false))
 
-          expected = { type: 'canceled' }.to_json
+          expected = { type: 'cancelled' }.to_json
 
           delete :delete, nusnetId: 'a0123456', friendNusnetId: 'a0987654'
 

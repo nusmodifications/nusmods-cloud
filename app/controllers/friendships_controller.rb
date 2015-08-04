@@ -46,7 +46,7 @@ class FriendshipsController < ApplicationController
       if friendship.approved
         return generate_api_payload('deleted')
       elsif friendship.user_id == @user.id
-        return generate_api_payload('canceled')
+        return generate_api_payload('cancelled')
       else
         return generate_api_payload('rejected')
       end
