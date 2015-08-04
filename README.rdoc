@@ -34,9 +34,10 @@ Backend for social features of NUSMods.
 === How to contribute:
 1. Branch out from latest master
     git checkout -b new_feature
-2. Implement the new feature / bug fix
-3. Add the spec of your feature in specs/, make sure all of them passes
-4. Create a PR.
+2. Assign the issue (create if not exist) to yourself to avoid multiple people working on the same issue.
+3. Implement the new feature / bug fix
+4. Add the spec of your feature in specs/, make sure all of them passes
+5. Create a PR.
 
 You can also do it in a TDD (Test Driven Development) way.
 1. Branch out from latest master
