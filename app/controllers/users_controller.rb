@@ -12,14 +12,14 @@ class UsersController < ApplicationController
     user.access_token = Digest::SHA2.base64digest(profile[:ivle_token])
 
     if user.save
-      render json: user, serializer: UserProfileSerializer
+      generate_api_payload('userProfile', UserProfileSerializer.new(user))
     else
       generate_error_payload(400, 'Failed to login. Please contact support.')
     end
   end
 
   def show
-    render json: @user, serializer: UserProfileSerializer
+    generate_api_payload('userProfile', UserProfileSerializer.new(@user))
   end
 
   private

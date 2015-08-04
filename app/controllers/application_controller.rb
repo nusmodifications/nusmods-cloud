@@ -17,6 +17,12 @@ class ApplicationController < ActionController::API
       end
     end
 
+    def generate_api_payload(type, data)
+      payload = { type: type, data: data }
+
+      render json: payload, status: :ok
+    end
+
     def generate_error_payload(status, details)
       error = {
         status: status,

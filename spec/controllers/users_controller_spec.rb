@@ -17,7 +17,8 @@ RSpec.describe UsersController, type: :controller do
 
   let(:sample_output) do
     {
-      userProfile: {
+      type: 'userProfile',
+      data: {
         nusnetId: 'a0123456',
         name: 'LIU XINAN',
         email: 'xinan@u.nus.edu',

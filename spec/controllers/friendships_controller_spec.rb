@@ -22,7 +22,8 @@ RSpec.describe FriendshipsController, type: :controller do
     context 'when user is authenticated' do
       it 'returns 200 success along with friends, outgoing requests, incoming requests' do
         expected = {
-          friendships: {
+          type: 'friendships',
+          data: {
             friends: [
               {
                 nusnetId: 'a1234567',

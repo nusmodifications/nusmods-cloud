@@ -11,7 +11,8 @@ RSpec.describe TimetablesController, type: :controller do
 
   let(:sample_output) do
     {
-      timetable: {
+      type: 'timetable',
+      data: {
         semester: '2015-2016/sem1',
         lessons: 'CS3230[LEC]=2&CS3244[LEC]=1'
       }
@@ -40,7 +41,8 @@ RSpec.describe TimetablesController, type: :controller do
         ]
 
         expected = {
-          timetables: [
+          type: 'timetables',
+          data: [
             {
               semester: '2015-2016/sem1',
               lessons: 'CS3230[LEC]=2'

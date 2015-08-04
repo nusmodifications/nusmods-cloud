@@ -1,6 +1,7 @@
 class TimetablesController < ApplicationController
   def index
-    render json: @user.timetables, each_serializer: TimetableSerializer
+    timetables = ActiveModel::ArraySerializer.new(@user.timetables, each_serializer: TimetableSerializer)
+    generate_api_payload('timetables', timetables)
   end
 
   def create
@@ -9,7 +10,7 @@ class TimetablesController < ApplicationController
     timetable.lessons = timetable_params[:lessons] || ''
     timetable.user = @user
     if timetable.save
-      render json: timetable, serializer: TimetableSerializer
+      generate_api_payload('timetable', TimetableSerializer.new(timetable))
     else
       puts timetable.errors.messages
       generate_error_payload(400, 'Failed to save timetable. Please contact support.')
@@ -19,7 +20,7 @@ class TimetablesController < ApplicationController
   def show
     timetable = @user.timetables.find_by_semester(params[:semester])
     if timetable.present?
-      render json: timetable, serializer: TimetableSerializer
+      generate_api_payload('timetable', TimetableSerializer.new(timetable))
     else
       generate_error_payload(404, 'Timetable of the requested semester does not exist.')
     end

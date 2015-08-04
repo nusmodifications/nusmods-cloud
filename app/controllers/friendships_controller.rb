@@ -1,5 +1,6 @@
 class FriendshipsController < ApplicationController
   def index
-    render json: @user, serializer: FriendshipsSerializer
+    friendships = FriendshipsSerializer.new(@user)
+    generate_api_payload('friendships', friendships)
   end
 end
