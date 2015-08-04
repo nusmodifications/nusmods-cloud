@@ -55,6 +55,11 @@ class FriendshipsController < ApplicationController
     end
   end
 
+  def timetables
+    friendsTimetables = ActiveModel::ArraySerializer.new(@user.friends, each_serializer: FriendTimetableSerializer)
+    generate_api_payload('friendsTimetables', friendsTimetables)
+  end
+
   private
     def friendship_params
       params.require(:friendNusnetId)

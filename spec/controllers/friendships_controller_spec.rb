@@ -93,7 +93,7 @@ RSpec.describe FriendshipsController, type: :controller do
           }
         }.to_json
 
-        get :index, nusnetId: 'a0123456'
+        post :create, nusnetId: 'a0123456'
         expect(response).to have_http_status(:unauthorized)
         expect(response.body).to eq(expected)
       end
@@ -232,7 +232,7 @@ RSpec.describe FriendshipsController, type: :controller do
           }
         }.to_json
 
-        get :index, nusnetId: 'a0123456'
+        delete :delete, nusnetId: 'a0123456', friendNusnetId: 'a0987654'
         expect(response).to have_http_status(:unauthorized)
         expect(response.body).to eq(expected)
       end
@@ -288,6 +288,65 @@ RSpec.describe FriendshipsController, type: :controller do
           expect(response).to have_http_status(:success)
           expect(response.body).to eq(expected)
         end
+      end
+    end
+  end
+
+  describe 'GET #timetables' do
+    context 'when user is not authenticated' do
+      it 'returns 401 unauthorized' do
+        expected = {
+          status: 'Unauthorized',
+          code: 401,
+          response: {
+            message: 'YOU SHALL NOT PASS!'
+          }
+        }.to_json
+
+        get :timetables, nusnetId: 'a0123456'
+        expect(response).to have_http_status(:unauthorized)
+        expect(response.body).to eq(expected)
+      end
+    end
+
+    context 'when user is authenticated' do
+      before do
+        request.headers['Authorization'] = 'this_is_a_token_if_you_believe'
+        allow(User).to receive_message_chain(:where, :first)
+            .and_return(user1)
+      end
+
+      it 'returns 200 success along with a list of friends together with their timetables' do
+        expect_any_instance_of(User).to receive(:friends).and_return([user2])
+        expect(user2).to receive(:timetables)
+            .and_return([Timetable.new(semester: '2015-2016/sem1', lessons: 'CS3230[LEC]=2&CS3244[LEC]=1')])
+
+        expected = {
+          type: 'friendsTimetables',
+          data: [
+            {
+              nusnetId: 'a0987654',
+              name: 'Tay Yang Shun',
+              email: nil,
+              gender: nil,
+              faculty: nil,
+              firstMajor: nil,
+              secondMajor: nil,
+              matriculationYear: nil,
+              timetables: [
+                {
+                  semester: '2015-2016/sem1',
+                  lessons: 'CS3230[LEC]=2&CS3244[LEC]=1'
+                }
+              ]
+            }
+          ]
+        }.to_json
+
+        get :timetables, nusnetId: 'a0123456'
+
+        expect(response).to have_http_status(:success)
+        expect(response.body).to eq(expected)
       end
     end
   end

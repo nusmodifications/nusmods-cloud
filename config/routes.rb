@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   post 'users/:nusnetId/friends', to: 'friendships#create'
   delete 'users/:nusnetId/friends/:friendNusnetId', to: 'friendships#delete'
 
+  get 'users/:nusnetId/friends/timetables', to: 'friendships#timetables'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
