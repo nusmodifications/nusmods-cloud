@@ -1,10 +1,9 @@
 FROM rails:4.2.3
 
-RUN mkdir -p /var/www/nusmods-cloud
-ADD . /var/www/nusmods-cloud
+ENV APP_HOME=/var/www/nusmods-cloud/
 
-RUN mkdir -p /shared/gems && \
-      cd /var/www/nusmods-cloud &&\
-      bundle install --deployment --without test:development --path=/shared/gems
+RUN mkdir -p $APP_HOME
+WORKDIR $APP_HOME
 
-WORKDIR /var/www/nusmods-cloud
+ADD . $APP_HOME
+RUN bundle install --deployment --without development:test --jobs=4 --path=/tmp

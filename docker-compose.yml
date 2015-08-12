@@ -14,7 +14,7 @@ nginx:
 
 web:
   image: nusmodifications/nusmods-cloud
-  command: bash -c "bundle exec rake db:setup && bundle exec rake db:migrate && bundle install --deployment --without test:development --path=/shared/gems && bundle exec puma -C config/puma.rb"
+  command: bundle exec puma -C config/puma.rb
   expose:
     - "3000"
   env_file:
@@ -26,6 +26,5 @@ web:
     DATABASE_USER: postgres
   volumes:
     - /shared/web/log:/var/www/nusmods-cloud/log
-    - /shared/web/gems:/shared/gems
   links:
     - db
