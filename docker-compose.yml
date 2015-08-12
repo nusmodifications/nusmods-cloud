@@ -1,0 +1,31 @@
+db:
+  image: postgres:9.4.4
+  volumes:
+    - /shared/db:/var/lib/postgresql/data
+
+nginx:
+  image: nginx:1.9
+  ports:
+    - "8000:80"
+  volumes:
+    - nginx:/etc/nginx/conf.d:ro
+  links:
+    - web
+
+web:
+  image: nusmodifications/nusmods-cloud
+  command: bash -c "bundle exec rake db:setup && bundle exec rake db:migrate && bundle install --deployment --without test:development --path=/shared/gems && bundle exec rake db:migrate && bundle exec rails server -b 0.0.0.0"
+  expose:
+    - "3000"
+  env_file:
+    - .env
+  environment:
+    RAILS_ENV: production
+    RACK_ENV: production
+    DATABASE_HOST: db
+    DATABASE_USER: postgres
+  volumes:
+    - /shared/web/log:/var/www/nusmods-cloud/log
+    - /shared/web/gems:/shared/gems
+  links:
+    - db
