@@ -14,7 +14,7 @@ nginx:
 
 web:
   image: nusmodifications/nusmods-cloud
-  command: bash -c "bundle exec rake db:setup && bundle exec rake db:migrate && bundle install --deployment --without test:development --path=/shared/gems && bundle exec rake db:migrate && bundle exec rails server -b 0.0.0.0"
+  command: bash -c "bundle exec rake db:setup && bundle exec rake db:migrate && bundle install --deployment --without test:development --path=/shared/gems && bundle exec puma -C config/puma.rb"
   expose:
     - "3000"
   env_file:
