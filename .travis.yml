@@ -1,8 +1,6 @@
 language: ruby
 cache: bundler
 rvm: 2.2.2
-env:
-- DB=mysql
 sudo: false
 before_script:
 - bundle exec rake db:setup

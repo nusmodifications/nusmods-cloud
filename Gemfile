@@ -5,8 +5,8 @@ gem 'rails', '4.2.3'
 
 gem 'rails-api'
 
-gem 'mysql2'
-
+gem 'pg'
+gem 'puma', '~> 2.12.3'
 gem 'httparty'
 gem 'active_model_serializers'
 gem 'rack-cors', require: 'rack/cors'
