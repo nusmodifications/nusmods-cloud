@@ -1,4 +1,4 @@
-= NUSModsCloud {<img src="https://travis-ci.org/nusmodifications/nusmods-cloud.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/nusmodifications/nusmods-cloud]
+= NUSModsCloud {<img src="https://travis-ci.org/nusmodifications/nusmods-cloud.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/nusmodifications/nusmods-cloud] {<img src="https://codeclimate.com/github/nusmodifications/nusmods-cloud/badges/gpa.svg" />}[https://codeclimate.com/github/nusmodifications/nusmods-cloud]
 
 Backend for social features of NUSMods.
 
