@@ -2,7 +2,7 @@ class Timetable < ActiveRecord::Base
   validates :user, presence: true
   validates :semester, uniqueness: { scope: :user }
   validate :semester_must_be_valid
-  validates :lessons, format: { with: /\A([A-Z]+\d{4}[A-Z]*(\[[A-Z]+\])?=\d*\&?)*\z/ }, allow_blank: true
+  validates :lessons, format: { with: /\A([A-Z]+\d{4}[A-Z]*(\[[A-Z]+\])?=[A-z0-9]*\&?)*\z/ }, allow_blank: true
 
   belongs_to :user
 
