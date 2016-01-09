@@ -39,7 +39,8 @@ class IVLE
       result = response.parsed_response['Results'][0]
       result = Hash[result.map { |k, v| [k.underscore.intern, v] }]
       result[:nusnet_id] = result.delete(:user_id)
-      result.merge(ivle_token: @options[:query][:Token])
+      result.slice(:nusnet_id, :name, :email, :gender, :faculty, :first_major, :second_major, :matriculation_year)
+        .merge(ivle_token: @options[:query][:Token])
     rescue
       nil
     end
