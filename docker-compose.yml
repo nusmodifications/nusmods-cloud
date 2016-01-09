@@ -3,15 +3,6 @@ db:
   volumes:
     - /shared/db:/var/lib/postgresql/data
 
-nginx:
-  image: nginx:1.9
-  ports:
-    - "8000:80"
-  volumes:
-    - nginx:/etc/nginx/conf.d:ro
-  links:
-    - web
-
 web:
   image: nusmodifications/nusmods-cloud
   command: bundle exec puma -C config/puma.rb
