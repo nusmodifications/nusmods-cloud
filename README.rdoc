@@ -21,9 +21,11 @@ Backend for social features of NUSMods.
 === How to run it:
 1. Fork this repo.
 2. Install all the dependencies.
-    brew install mysql
+    brew install postgresql
     bundle install
 3. Set up database
+    # See homebrew caveats for how to start postgresql. E.g.
+    # postgresql -D /usr/local/var/postgres
     bundle exec rake db:setup
 4. Get a IVLE API key from https://ivle.nus.edu.sg/LAPI/default.aspx
 5. Run
