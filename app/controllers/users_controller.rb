@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   def create
     profile = IVLE.new(auth_params[:ivleToken]).get_profile
-    unless profile.present? && profile[:nusnet_id].casecmp(auth_params[:nusnetId]) == 0
+    unless profile.present?
       return generate_error_payload('Unauthorized', 401, 'Your token is not my token.')
     end
 
@@ -24,7 +24,6 @@ class UsersController < ApplicationController
 
   private
     def auth_params
-      params.require(:nusnetId)
       params.require(:ivleToken)
       params.permit(:nusnetId, :ivleToken)
     end
