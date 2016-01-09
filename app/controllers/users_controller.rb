@@ -9,7 +9,7 @@ class UsersController < ApplicationController
 
     user = User.find_by_nusnet_id(profile[:nusnet_id]) || User.new
     user.assign_attributes(profile)
-    user.access_token = Digest::SHA2.base64digest(profile[:ivle_token])
+    user.access_token ||= SecureRandom.base64(24)
 
     if user.save
       generate_api_payload('userProfile', UserProfileSerializer.new(user))
@@ -22,9 +22,14 @@ class UsersController < ApplicationController
     generate_api_payload('userProfile', UserProfileSerializer.new(@user))
   end
 
+  def update
+    @user.update_attribute(:access_token, SecureRandom.base64(24))
+    generate_api_payload('Logged out')
+  end
+
   private
     def auth_params
       params.require(:ivleToken)
-      params.permit(:nusnetId, :ivleToken)
+      params.permit(:ivleToken)
     end
 end

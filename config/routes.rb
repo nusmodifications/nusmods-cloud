@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get 'users/:nusnetId', to: 'users#show'
   post 'users', to: 'users#create'
+  put 'users/:nusnetId', to: 'users#update'
 
   get 'users/:nusnetId/timetables', to: 'timetables#index'
   post 'users/:nusnetId/timetables', to: 'timetables#create'
