@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root to: redirect('http://nusmods.com')
+
   get 'users/:nusnetId', to: 'users#show'
   post 'users', to: 'users#create'
   put 'users/:nusnetId', to: 'users#update'
