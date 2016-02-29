@@ -15,7 +15,7 @@ Backend for social features of NUSMods.
 === Dependencies:
 * ruby
 * rails-api
-* mysql
+* postgresql
 
 
 === How to run it:
